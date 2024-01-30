@@ -1,0 +1,98 @@
+.logo {
+    display: block;
+    margin: auto;
+    height: 50px;
+    width: 50px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.container {
+    max-width: 955px;
+    margin: auto;
+    margin-bottom: 23px;
+    padding: 33px;
+    height: 60vh;
+    border: 2px solid rgb(253, 252, 252);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    overflow-y: auto;
+}
+
+.message {
+    background-color: antiquewhite;
+    width: 24%;
+    padding: 10px;
+    margin: 17px 2px;
+    border-radius: 10px;
+}
+
+.left {
+    float: left;
+    clear: both;
+}
+
+.right {
+    float: right;
+    clear: both;
+}
+
+.send-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 955px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+#mssgInput {
+    flex: 1;
+    width: 80%;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    height: 34px;
+    margin-right: 10px;
+}
+
+.btn {
+    background-color: aquamarine;
+    height: 36px;
+    flex-shrink: 0;
+    /* Prevent button from shrinking */
+}
+
+.btn:hover {
+    background-color: rgb(18, 235, 162);
+}
+
+/* Media Query for Mobile */
+@media (max-width: 767px) {
+    .container {
+        padding: 20px;
+    }
+
+    .message {
+        width: auto;
+    }
+
+    .send-container {
+        flex-direction: row;
+        /* Keep horizontal layout */
+        align-items: center;
+    }
+
+    #mssgInput {
+        width: 70%;
+        /* Adjust width as needed */
+        margin-right: 10px;
+        margin-bottom: 0;
+        /* Remove bottom margin */
+    }
+
+    .btn {
+        flex-shrink: 0;
+    }
+}
