@@ -1,6 +1,15 @@
 const msg = document.getElementById('msg');
 const token = localStorage.getItem('token');
 
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const res = await axios.get(`/getChats`, {headers: {'auth': token}});
+        console.log(res.data)
+    } catch (err) {
+        console.log(err);
+    }
+})
+
 async function storeChat(e){
     e.preventDefault();
     try {
