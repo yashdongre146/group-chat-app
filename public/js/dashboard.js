@@ -1,21 +1,16 @@
-const expenseAmount = document.getElementById('expenseamount');
-const chooseDescription = document.getElementById('choosedescription');
-const selectCategory = document.getElementById('selectcategory');
+const msg = document.getElementById('msg');
 const token = localStorage.getItem('token');
-const ul = document.getElementById('list');
 
-function parseJwt (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-}
-window.addEventListener('DOMContentLoaded', async () => {
+async function storeChat(e){
+    e.preventDefault();
     try {
-        const res = await axios.get(`/`, {headers: {'auth': token}});
+        const userMessage = {
+            message: msg.value
+        }
+        const res = await axios.post(`/storeChat`,userMessage, {headers: {'auth': token}});
+
+        alert(res.data.message);
     } catch (err) {
         console.log(err);
     }
-})
+}

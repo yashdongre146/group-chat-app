@@ -4,32 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ezchat</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Bootstrap CSS (optional) -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Group Chat App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
-<body class="bg-gradient-to-r from-blue-100 via-indigo-300 to-indigo-600">
-    <nav>
-        <img class="logo" src="images/blob.jpg" alt="logo.png">
-    </nav>
+<body>
     <div class="container">
         <div class="message right">Yash: Hey! how r u?</div>
         <div class="message left">Me: im fine</div>
         <div class="message right">Yash: Hey! how r u?</div>
-        <div class="message right">Yash: Hey! how r u?</div>
-        <div class="message right">Yash: Hey! how r u?</div>
-        <div class="message right">Yash: Hey! how r u?</div>
-        <div class="message right">Yash: Hey! how r u?</div>
     </div>
     <div class="send">
-        <form action="" class="send-container">
-            <input type="text" name="mssgInput" id="mssgInput">
+        <form onsubmit="storeChat(event)" class="send-container">
+            <input type="text" name="msg" id="msg">
             <button type="submit" class="btn"><b>Send</b></button>
         </form>
     </div>
+    <script src="/js/dashboard.js"></script>
 </body>
 
 </html>

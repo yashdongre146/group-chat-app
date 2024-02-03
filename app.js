@@ -3,12 +3,14 @@ const fs = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
+const chatRoutes = require('./routes/chat')
 const User = require('./models/user')
 const ForgotPassword = require('./models/forgotPassword')
 const sequelize = require('./util/database')
 const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const Chat = require('./models/chat')
 
 const app = express();
 
@@ -36,14 +38,14 @@ app.get('/home', (req, res) => {
 });
 
 app.use(userRoutes);
+app.use(chatRoutes);
 
 app.use(helmet());
 
-
-// User.hasMany(Expense);
-// Expense.belongsTo(User);
 User.hasMany(ForgotPassword);
 ForgotPassword.belongsTo(User);
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 const PORT = process.env.PORT;
 
