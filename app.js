@@ -9,13 +9,13 @@ const ForgotPassword = require('./models/forgotPassword')
 const sequelize = require('./util/database')
 const cors = require('cors')
 const helmet = require('helmet')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const Chat = require('./models/chat')
 
 const app = express();
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
-app.use(morgan('combined', {stream: accessLogStream}));
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
+// app.use(morgan('combined', {stream: accessLogStream}));
 require('dotenv').config();
 app.use(cors());
 app.use(express.static('public'));

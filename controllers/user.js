@@ -7,8 +7,8 @@ const { v4: uuidv4, v5: uuidv5 } = require('uuid')
 
 const Sib = require('sib-api-v3-sdk');
 
-function generateToken(id, name, isPremiumUser){
-    return jwt.sign({id, name, isPremiumUser}, process.env.JWT_SECRET)
+function generateToken(id, name){
+    return jwt.sign({id, name}, process.env.JWT_SECRET)
 }
 
 exports.signup =  (req, res) => {
@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
                 const passwordMatch = await bcryptjs.compare(req.body.password, user.password);
 
                 if (passwordMatch) {
-                    res.json({ token: generateToken(user.id, user.name, user.isPremiumUser) });
+                    res.json({ token: generateToken(user.id, user.name) });
                 } else {
                     res.status(422).json({ message: 'Password does not match.' });
                 }
