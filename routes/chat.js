@@ -3,9 +3,8 @@ const chatController = require('../controllers/chat');
 const userAuthentication = require('../middleware/auth');
 
 const router = express.Router();
-router.use(userAuthentication.auth);
 
-router.post('/storeChat', chatController.storeChat)
-router.get('/getChats', chatController.getChats)
+router.post('/storeChat',userAuthentication.auth, chatController.storeChat)
+router.get('/getChats',userAuthentication.auth, chatController.getChats)
 
 module.exports = router;

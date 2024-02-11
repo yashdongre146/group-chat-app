@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const Group = require('../models/group')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 const ForgotPassword = require('../models/forgotPassword');
@@ -135,6 +136,38 @@ exports.updatePassword = async (req, res) => {
         res.status(500).json()
     }
 };
+
+exports.getUsers = async (req, res) => {
+    try {
+         const users = await User.findAll();
+         res.status(201).json(users)
+     } catch (err) {
+             res.status(400).json();
+     }
+ }
+exports.getGroups = async (req, res) => {
+    try {
+         const groups = await req.user.getGroups();
+         res.status(201).json(groups)
+     } catch (err) {
+        console.log(err);
+             res.status(400).json();
+     }
+ }
+exports.addGroup = async (req, res) => {
+    try {
+        const { name, selectedMembers } = req.body;
+        const newGroup = await Group.create({name});
+
+        const members = await User.findAll({ where: { name: selectedMembers } });
+
+        await newGroup.addUsers(members);
+
+        res.status(201).json({ message: 'Group created successfully.'});
+     } catch (err) {
+             res.status(400).json();
+     }
+ }
 
 exports.generateToken = generateToken;
 

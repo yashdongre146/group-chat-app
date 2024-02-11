@@ -1,13 +1,15 @@
-const Chat = require("../models/chat")
+const Groupmessage = require('../models/groupmessage')
+const Group = require('../models/group');
+const { login } = require('./user');
+
 
 exports.storeChat =  async (req, res) => {
-    const limit = 10;
-    const page = parseInt(req.query.page);
     try {
-         await req.user.createChat(req.body);
-         const count = await Chat.count();
-         const hasMoreData = count - (page-1)*limit > limit ? true : false;
-         res.status(201).json({success: true, message: "sent", hasMoreData})
+         const {message} = req.body;
+         const groupName = req.query.groupName;
+         const group = await Group.findOne({where: {name: groupName}})
+         await req.user.createGroupmessage({message, groupId: group.id});
+         res.status(201).json({success: true, message: "sent"})
      } catch (err) {
             console.log(err);
              res.status(400).json();
@@ -15,30 +17,12 @@ exports.storeChat =  async (req, res) => {
  }
 
 exports.getChats =  async (req, res) => {
-    const page = parseInt(req.query.page);
-    const limit = 10;
-    const offset = (page - 1) * limit;
     try {
-         const chats = await Chat.findAll({
-            // order: [['createdAt', 'DESC']],
-            offset: offset,
-            limit: limit
-         });
-         const count = await Chat.count();
-
-         const hasMoreData = count - (page-1)*limit > limit ? true : false;
-         const nextPage = hasMoreData ? Number(page) + 1 : undefined;
-         const previousPage = page > 1 ? Number(page)-1 : undefined;
-         const hasPreviousPage = previousPage ? true : false;
-         res.status(201).json(
-            {
-                 chats: chats,
-                 currentPage: page,
-                 hasNextPage: hasMoreData,
-                 hasPreviousPage: hasPreviousPage,
-                 previousPage: previousPage,
-                 nextPage: nextPage
-            })
+        const user = req.user;
+        const groupName = req.query.groupName;
+        const group = await Group.findOne({where: {name: groupName}})
+        const chats = await Groupmessage.findAll({where: {groupId: group.id}})
+        res.status(201).json(chats)
      } catch (err) {
              res.status(400).json();
      }

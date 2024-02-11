@@ -1,6 +1,4 @@
 const express = require('express')
-const fs = require('fs')
-const path = require('path')
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
 const chatRoutes = require('./routes/chat')
@@ -9,13 +7,12 @@ const ForgotPassword = require('./models/forgotPassword')
 const sequelize = require('./util/database')
 const cors = require('cors')
 const helmet = require('helmet')
-// const morgan = require('morgan')
-const Chat = require('./models/chat')
+const Group = require('./models/group')
+const Groupmembers = require('./models/groupmembers')
+const Groupmessage = require('./models/groupmessage')
 
 const app = express();
 
-// const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
-// app.use(morgan('combined', {stream: accessLogStream}));
 require('dotenv').config();
 app.use(cors());
 app.use(express.static('public'));
@@ -44,8 +41,15 @@ app.use(helmet());
 
 User.hasMany(ForgotPassword);
 ForgotPassword.belongsTo(User);
-User.hasMany(Chat);
-Chat.belongsTo(User);
+Group.belongsToMany(User, { through: 'Groupmembers' });
+User.belongsToMany(Group, { through: 'Groupmembers' });
+
+User.hasMany(Groupmessage);
+Groupmessage.belongsTo(User);
+
+Group.hasMany(Groupmessage);
+Groupmessage.belongsTo(Group);
+
 
 const PORT = process.env.PORT;
 

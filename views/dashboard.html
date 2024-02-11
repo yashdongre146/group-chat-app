@@ -14,14 +14,25 @@
 </head>
 
 <body>
-    <div class="container" onscroll="handleScroll()">
-    </div>
-    <div class="send">
-        <form onsubmit="storeChat(event)" class="send-container">
-            <input type="text" name="msg" id="msg">
-            <button type="submit" class="btn"><b>Send</b></button>
-        </form>
-    </div>
+    <div class="group-container">
+        <button id="createNewGroup" class="btn" onclick="openGroupModel()">Create new group</button>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <form onsubmit="createGroup()">
+              <span class="close">&times;</span>
+              <h2>Enter Group Details</h2>
+              <input type="text" id="groupNameInput" class="input-field" placeholder="Enter group name" required>
+              <h3>Select Members:</h3>
+              <div id="membersList">
+              </div>
+              <button type="submit" id="createBtn" class="btn">Create Group</button>
+            </form>
+          </div>
+        </div>
+        <div id="groupsContainer">
+        </div>
+      </div>
+      <div id="dynamic-content"></div>
     <script src="/js/dashboard.js"></script>
 </body>
 

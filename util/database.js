@@ -6,4 +6,7 @@ const sequelize = new Sequelize(process.env.SQL_DB_NAME, process.env.SQL_DB_USER
     host: process.env.SQL_DB_HOST
 })
 
+// Disable logging
+// sequelize.options.logging = false;
+
 module.exports = sequelize;

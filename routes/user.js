@@ -1,5 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/user');
+const userAuthentication = require('../middleware/auth');
+
 
 const router = express.Router();
 
@@ -8,5 +10,10 @@ router.post('/login', userController.login)
 router.post('/forgotPassword', userController.forgotPassword)
 router.get('/reset-password/:uId', userController.resetPassword)
 router.get('/update-password/:uId', userController.updatePassword)
+
+
+router.get('/getUsers', userAuthentication.auth, userController.getUsers)
+router.get('/getGroups', userAuthentication.auth, userController.getGroups)
+router.post('/addGroup', userAuthentication.auth, userController.addGroup)
 
 module.exports = router;
