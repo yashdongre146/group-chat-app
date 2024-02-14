@@ -1,180 +1,197 @@
-#dynamic-content{
+#dynamic-content {
   display: flex;
   flex-direction: row;
 }
 
 .container {
-    flex: 2.2;
-    margin: auto;
-    margin-bottom: 23px;
-    padding: 33px;
-    height: 60vh;
-    border: 2px solid rgb(253, 252, 252);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 25px;
-    overflow-y: auto;
+  flex: 2.2;
+  margin: auto;
+  margin-bottom: 23px;
+  padding: 33px;
+  height: 60vh;
+  border: 2px solid rgb(253, 252, 252);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  overflow-y: auto;
 }
+
 .showMembersDiv {
-    flex: 0.8;
-    margin: auto;
-    margin-bottom: 23px;
-    padding: 33px;
-    height: 60vh;
-    border: 2px solid wheat;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 25px;
-    overflow-y: auto;
+  flex: 0.8;
+  margin: auto;
+  margin-bottom: 23px;
+  padding: 33px;
+  height: 60vh;
+  border: 2px solid wheat;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  overflow-y: auto;
 }
 
 .message {
-    background-color: antiquewhite;
-    width: 24%;
-    padding: 10px;
-    margin: 17px 2px;
-    border-radius: 10px;
+  background-color: antiquewhite;
+  width: 24%;
+  padding: 10px;
+  margin: 17px 2px;
+  border-radius: 10px;
 }
 
 .left {
-    float: left;
-    clear: both;
+  float: left;
+  clear: both;
 }
 
 .right {
-    float: right;
-    clear: both;
+  float: right;
+  clear: both;
 }
 
 .send-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 955px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 955px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 15px;
 }
 
+
 #msg {
-    flex: 1;
-    width: 80%;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    height: 34px;
-    margin-right: 10px;
+  flex: 1;
+  width: 80%;
+  border: 1px solid #ccc;
+  /* Add a border */
+  border-radius: 20px;
+  /* Add rounded corners */
+  padding: 10px;
+  /* Add padding for better spacing */
+  margin-right: 10px;
+  outline: none;
+  /* Remove default focus outline */
+}
+
+#msg:focus {
+  border-color: dodgerblue;
+  /* Change border color on focus */
+  box-shadow: 0 0 5px dodgerblue;
+  /* Add a shadow on focus */
 }
 
 .btn {
-    background-color: aquamarine;
-    height: 36px;
-    flex-shrink: 0;
-    /* Prevent button from shrinking */
+  background-color: aquamarine;
+  height: 36px;
+  flex-shrink: 0;
+  /* Prevent button from shrinking */
 }
 
 .btn:hover {
-    background-color: rgb(18, 235, 162);
+  background-color: rgb(18, 235, 162);
 }
 
 
 
 /* Media Query for Mobile */
 @media (max-width: 767px) {
-    .container {
-        padding: 20px;
-    }
+  .container {
+    padding: 20px;
+  }
 
-    .message {
-        width: auto;
-    }
+  .message {
+    width: auto;
+  }
 
-    .send-container {
-        flex-direction: row;
-        /* Keep horizontal layout */
-        align-items: center;
-    }
+  .send-container {
+    flex-direction: row;
+    /* Keep horizontal layout */
+    align-items: center;
+  }
 
-    #mssgInput {
-        width: 70%;
-        /* Adjust width as needed */
-        margin-right: 10px;
-        margin-bottom: 0;
-        /* Remove bottom margin */
-    }
+  #mssgInput {
+    width: 70%;
+    /* Adjust width as needed */
+    margin-right: 10px;
+    margin-bottom: 0;
+    /* Remove bottom margin */
+  }
 
-    .btn {
-        flex-shrink: 0;
-    }
+  .btn {
+    flex-shrink: 0;
+  }
 }
+
 /* group styles*/
 .group-container {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  
-  .input-field {
-    padding: 10px;
-    margin: 10px;
-    width: 80%;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    border-radius: 5px;
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .group-name {
-    display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 5px 10px;
-    margin: 5px;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  .group-name.selected {
-    background-color: blue; /* Change the background color to indicate selection */
-    color: white; /* Change the text color for better contrast */
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  padding: 10px;
+  margin: 10px;
+  width: 80%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 5px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.group-name {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.group-name.selected {
+  background-color: blue;
+  /* Change the background color to indicate selection */
+  color: white;
+  /* Change the text color for better contrast */
 }

@@ -82,6 +82,9 @@ async function getGroupMembers(groupName) {
 
     const showMembersDiv = document.querySelector(".showMembersDiv");
     showMembersDiv.innerHTML = "";
+    const h3 = document.createElement("h3");
+    h3.appendChild(document.createTextNode(`Group Members`));
+    showMembersDiv.appendChild(h3);
     for (let groupMember of res.data.groupmembers) {
       const div = document.createElement("div");
       div.appendChild(document.createTextNode(`${groupMember.name}`));
@@ -141,6 +144,9 @@ async function getAllUsers(groupName, groupMembers) {
       allUsersDiv.appendChild(div);
     }
     const showMembersDiv = document.querySelector(".showMembersDiv");
+    const h3 = document.createElement("h3");
+    h3.appendChild(document.createTextNode(`All Users:`));
+    showMembersDiv.appendChild(h3);
     showMembersDiv.appendChild(allUsersDiv);
   } catch (err) {
     console.log(err);
@@ -242,7 +248,7 @@ async function showGroupChats(group) {
   div.classList.add("container");
   dynamicContent.appendChild(div);
 
-  //showing group members to the users
+  //creating div to show group members to the users and all users
   const showMembersDiv = document.createElement("div");
   showMembersDiv.classList.add("showMembersDiv");
   dynamicContent.appendChild(showMembersDiv);
