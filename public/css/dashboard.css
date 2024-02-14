@@ -1,10 +1,26 @@
+#dynamic-content{
+  display: flex;
+  flex-direction: row;
+}
+
 .container {
-    max-width: 955px;
+    flex: 2.2;
     margin: auto;
     margin-bottom: 23px;
     padding: 33px;
     height: 60vh;
     border: 2px solid rgb(253, 252, 252);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    overflow-y: auto;
+}
+.showMembersDiv {
+    flex: 0.8;
+    margin: auto;
+    margin-bottom: 23px;
+    padding: 33px;
+    height: 60vh;
+    border: 2px solid wheat;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 25px;
     overflow-y: auto;
@@ -58,6 +74,8 @@
 .btn:hover {
     background-color: rgb(18, 235, 162);
 }
+
+
 
 /* Media Query for Mobile */
 @media (max-width: 767px) {

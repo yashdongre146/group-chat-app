@@ -157,13 +157,68 @@ exports.getGroups = async (req, res) => {
 exports.addGroup = async (req, res) => {
     try {
         const { name, selectedMembers } = req.body;
-        const newGroup = await Group.create({name});
+        const newGroup = await Group.create({name, adminIds: [req.user.id]});
 
         const members = await User.findAll({ where: { name: selectedMembers } });
 
         await newGroup.addUsers(members);
 
         res.status(201).json({ message: 'Group created successfully.'});
+     } catch (err) {
+             res.status(400).json();
+     }
+ }
+exports.getGroupMembers = async (req, res) => {
+    try {
+        const groupName = req.query.groupName;
+        const group = await Group.findOne({where: {name: groupName}})
+
+        const groupmembers = await group.getUsers();
+
+        res.status(201).json({groupmembers, adminIds: group.adminIds});
+     } catch (err) {
+             res.status(400).json();
+     }
+ }
+exports.makeUserAdmin = async (req, res) => {
+    try {
+        const userName = req.query.userName;
+        const groupName = req.query.groupName;
+        const user = await User.findOne({where: {name: userName}})
+        const group = await Group.findOne({where: {name: groupName}})
+
+        if (!group.adminIds.includes(user.id)) {
+            const modifiedArray = [...group.adminIds, user.id]
+            await Group.update({adminIds: modifiedArray}, {where: {id: group.id}})
+
+            res.status(201).json({ message: 'user is now admin of the group'});
+        } else {
+            throw new Error('User is already admin');
+        }
+     } catch (err) {
+             res.status(400).json({ message: err});
+     }
+ }
+exports.removeUserFromGroup = async (req, res) => {
+    try {
+        const userName = req.query.userName;
+        const groupName = req.query.groupName;
+        const user = await User.findOne({where: {name: userName}})
+        const group = await Group.findOne({where: {name: groupName}})
+
+        await group.removeUser(user)
+     } catch (err) {
+             res.status(400).json();
+     }
+ }
+exports.addUserToGroup = async (req, res) => {
+    try {
+        const userName = req.query.userName;
+        const groupName = req.query.groupName;
+        const user = await User.findOne({where: {name: userName}})
+        const group = await Group.findOne({where: {name: groupName}})
+
+        await group.addUser(user)
      } catch (err) {
              res.status(400).json();
      }
