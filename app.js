@@ -1,3 +1,7 @@
+// const http = require('http');
+// const {createServer} = require('node:http');
+// const {Server} = require('socket.io')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
@@ -12,8 +16,20 @@ const Groupmembers = require('./models/groupmembers')
 const Groupmessage = require('./models/groupmessage')
 
 const app = express();
+// const server = createServer(app);
+// const io = new Server(server);
 
 require('dotenv').config();
+
+// io.on('connection', socket => {
+//     console.log("Connection successful");
+//     socket.on('send', userMessage=>{
+//         console.log("message received");
+//         socket.broadcast.emit('receive', {message: userMessage.message})
+//     })
+// })
+
+
 app.use(cors());
 app.use(express.static('public'));
 app.use(bodyParser.json());

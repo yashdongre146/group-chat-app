@@ -7,6 +7,12 @@ const createBtn = document.getElementById("createBtn");
 const dynamicContent = document.getElementById("dynamic-content");
 const decodedToken = parseJwt(token);
 
+const socket = io('http://localhost:7000');
+
+socket.on('receive', data=>{
+  alert('data received')
+})
+
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -163,6 +169,9 @@ async function storeChat(e, groupName) {
     await axios.post(`/storeChat?groupName=${groupName}`, userMessage, {
       headers: { auth: token },
     });
+
+    // // socket code
+    socket.emit('send', userMessage)
     msg.value = "";
   } catch (err) {
     console.log(err);
