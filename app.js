@@ -14,6 +14,8 @@ const helmet = require('helmet')
 const Group = require('./models/group')
 const Groupmembers = require('./models/groupmembers')
 const Groupmessage = require('./models/groupmessage')
+const socketIO = require('socket.io');
+
 
 const app = express();
 // const server = createServer(app);
@@ -70,5 +72,19 @@ Groupmessage.belongsTo(Group);
 const PORT = process.env.PORT;
 
 sequelize.sync().then(()=>{
-    app.listen(3000);
+    const server = app.listen(3000);
+
+    // Pass the HTTP server to Socket.IO
+    const io = socketIO(server, {
+        cors: {
+            origin: ['http://localhost:3000']
+        }
+    });
+
+    io.on('connection', socket => {
+        console.log("Connection successful");
+        socket.on('send', (data)=>{
+            io.emit('receive', {message: data.message, name: data.decodedToken.name, id: data.decodedToken.id})
+        })
+    })
 }).catch(err=>console.log(err))

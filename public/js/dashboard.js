@@ -7,10 +7,24 @@ const createBtn = document.getElementById("createBtn");
 const dynamicContent = document.getElementById("dynamic-content");
 const decodedToken = parseJwt(token);
 
-const socket = io('http://localhost:7000');
+const socket = io();
 
 socket.on('receive', data=>{
-  alert('data received')
+  const container = document.querySelector(".container");
+
+  if (data.id === decodedToken.id) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+    div.classList.add("right");
+    div.appendChild(document.createTextNode(`You: ${data.message}`));
+    container.appendChild(div);
+  } else {
+    const div = document.createElement("div");
+    div.classList.add("message");
+    div.classList.add("left");
+    div.appendChild(document.createTextNode(`${data.name}: ${data.message}`));
+    container.appendChild(div);
+  }
 })
 
 function parseJwt(token) {
@@ -57,21 +71,21 @@ async function getChats(groupName) {
     const res = await axios.get(`/getChats?groupName=${groupName}`, {
       headers: { auth: token },
     });
-    console.log(decodedToken)
     const container = document.querySelector(".container");
     container.innerHTML = "";
-    for (let userChatDetails of res.data) {
+    for (let userChatDetails of res.data.chats) {
       if (userChatDetails.userId === decodedToken.id) {
         const div = document.createElement("div");
         div.classList.add("message");
         div.classList.add("right");
-        div.appendChild(document.createTextNode(`${userChatDetails.message}`));
+        div.appendChild(document.createTextNode(`You: ${userChatDetails.message}`));
         container.appendChild(div);
       } else {
+        const user = res.data.users[userChatDetails.userId-1];
         const div = document.createElement("div");
         div.classList.add("message");
         div.classList.add("left");
-        div.appendChild(document.createTextNode(`${userChatDetails.message}`));
+        div.appendChild(document.createTextNode(`${user.name}: ${userChatDetails.message}`));
         container.appendChild(div);
       }
     }
@@ -171,18 +185,17 @@ async function storeChat(e, groupName) {
     });
 
     // // socket code
-    socket.emit('send', userMessage)
+    socket.emit('send', {message: userMessage.message, decodedToken})
     msg.value = "";
   } catch (err) {
     console.log(err);
   }
 }
-setInterval(() => {
-  const selectedDiv = document.querySelector(".selected");
-  if (selectedDiv) {
-    getChats(selectedDiv.textContent);
-  }
-}, 1000);
+
+const selectedDiv = document.querySelector(".selected");
+if (selectedDiv) {
+  getChats(selectedDiv.textContent);
+}
 
 // group functions
 
@@ -333,3 +346,4 @@ async function addUserToGroup(userName, groupName) {
     alert("something went wrong.")
   }
 }
+
