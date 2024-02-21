@@ -84,7 +84,10 @@ sequelize.sync().then(()=>{
     io.on('connection', socket => {
         console.log("Connection successful");
         socket.on('send', (data)=>{
-            io.emit('receive', {message: data.message, name: data.decodedToken.name, id: data.decodedToken.id})
+            io.emit('receive', {message: data.message, name: data.decodedToken.name, id: data.decodedToken.id, isImage: data.isImage || false})
         })
+        // socket.on('sendImage', (data)=>{
+        //     io.emit('receive', {message: data.message, name: data.decodedToken.name, id: data.decodedToken.id, isImage: data.isImage})
+        // })
     })
 }).catch(err=>console.log(err))

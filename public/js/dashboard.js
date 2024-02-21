@@ -11,19 +11,54 @@ const socket = io();
 
 socket.on('receive', data=>{
   const container = document.querySelector(".container");
-
   if (data.id === decodedToken.id) {
-    const div = document.createElement("div");
-    div.classList.add("message");
-    div.classList.add("right");
-    div.appendChild(document.createTextNode(`You: ${data.message}`));
-    container.appendChild(div);
+    if(!data.isImage){
+      const div = document.createElement("div");
+      div.classList.add("message");
+      div.classList.add("right");
+      div.appendChild(document.createTextNode(`You: ${data.message}`));
+      container.appendChild(div);
+    }else{
+      const imgDiv = document.createElement("div");
+      imgDiv.classList.add("message");
+      imgDiv.classList.add("right");
+      imgDiv.appendChild(document.createTextNode(`You: `));
+
+      const img = document.createElement("img");
+      img.src = data.message;
+      img.height = 75;
+      img.width = 100;
+      // Add click event listener to open image in a new window
+      img.addEventListener("click", function() {
+        window.open(data.message, "_blank");
+      });
+      imgDiv.appendChild(img);
+      container.appendChild(imgDiv);
+    }
   } else {
-    const div = document.createElement("div");
-    div.classList.add("message");
-    div.classList.add("left");
-    div.appendChild(document.createTextNode(`${data.name}: ${data.message}`));
-    container.appendChild(div);
+      if(!data.isImage){
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.classList.add("left");
+        div.appendChild(document.createTextNode(`${data.name}: ${data.message}`));
+        container.appendChild(div);
+      }else{
+        const imgDiv = document.createElement("div");
+        imgDiv.classList.add("message");
+        imgDiv.classList.add("left");
+        imgDiv.appendChild(document.createTextNode(`${data.name}: `));
+
+        const img = document.createElement("img");
+        img.src = data.message;
+        img.height = 75;
+        img.width = 100;
+        // Add click event listener to open image in a new window
+        img.addEventListener("click", function() {
+          window.open(data.message, "_blank");
+        });
+        imgDiv.appendChild(img);
+        container.appendChild(imgDiv);
+      }
   }
 })
 
@@ -75,18 +110,66 @@ async function getChats(groupName) {
     container.innerHTML = "";
     for (let userChatDetails of res.data.chats) {
       if (userChatDetails.userId === decodedToken.id) {
-        const div = document.createElement("div");
-        div.classList.add("message");
-        div.classList.add("right");
-        div.appendChild(document.createTextNode(`You: ${userChatDetails.message}`));
-        container.appendChild(div);
+        if (!userChatDetails.isImage) {
+          const div = document.createElement("div");
+          div.classList.add("message");
+          div.classList.add("right");
+          div.appendChild(document.createTextNode(`You: ${userChatDetails.message}`));
+          container.appendChild(div);
+        } else {
+          const imgDiv = document.createElement("div");
+          imgDiv.classList.add("message");
+          imgDiv.classList.add("right");
+          imgDiv.appendChild(document.createTextNode(`You: `));
+
+          const img = document.createElement("img");
+          img.src = userChatDetails.message;
+          img.height = 75;
+          img.width = 100;
+          // Add click event listener to open image in a new window
+          img.addEventListener("click", function() {
+            window.open(userChatDetails.message, "_blank");
+          });
+          imgDiv.appendChild(img);
+          container.appendChild(imgDiv);
+        }
       } else {
-        const user = res.data.users[userChatDetails.userId-1];
-        const div = document.createElement("div");
-        div.classList.add("message");
-        div.classList.add("left");
-        div.appendChild(document.createTextNode(`${user.name}: ${userChatDetails.message}`));
-        container.appendChild(div);
+        if (!userChatDetails.isImage) {
+          let user;
+          for (let userObj of res.data.users) {
+            if (userObj.id === userChatDetails.userId) {
+              user = userObj;
+            }
+          }
+          const div = document.createElement("div");
+          div.classList.add("message");
+          div.classList.add("left");
+          div.appendChild(document.createTextNode(`${user.name}: ${userChatDetails.message}`));
+          container.appendChild(div);
+        }else{
+          let user;
+          for (let userObj of res.data.users) {
+            if (userObj.id === userChatDetails.userId) {
+              user = userObj;
+            }
+          }
+          // const user = res.data.users[userChatDetails.userId-1];
+          const imgDiv = document.createElement("div");
+          imgDiv.classList.add("message");
+          imgDiv.classList.add("left");
+          imgDiv.appendChild(document.createTextNode(`${user.name}: `));
+
+          const img = document.createElement("img");
+          img.src = userChatDetails.message;
+          img.height = 75;
+          img.width = 100;
+          // Add click event listener to open image in a new window
+          img.addEventListener("click", function() {
+            window.open(userChatDetails.message, "_blank");
+          });
+          imgDiv.appendChild(img);
+          container.appendChild(imgDiv);
+        }
       }
     }
   } catch (err) {
@@ -280,6 +363,8 @@ async function showGroupChats(group) {
   <div class="send">
       <form onsubmit="storeChat(event, '${group.textContent}')" class="send-container">
         <input type="text" name="msg" id="msg">
+        <input type="file" id="imageInput" accept="image/*">
+        <button type="button" class="btn" onclick="sendImages('${group.textContent}')"><b>Send Images</b></button>
         <button type="submit" class="btn"><b>Send</b></button>
     </form>
   </div>`;
@@ -346,4 +431,21 @@ async function addUserToGroup(userName, groupName) {
     alert("something went wrong.")
   }
 }
+async function sendImages(groupName){
+  var fileInput = document.getElementById('imageInput');
+  var file = fileInput.files[0];
 
+  if (file) {
+    console.log("Selected image:", file);
+    const formData = new FormData();
+    formData.append('imageFile', file);
+    formData.append('groupName', groupName);
+    const res = await axios.post('/sendImages', formData, {
+      headers: { auth: token}      
+    });
+    // // socket code
+    socket.emit('send', {message: res.data.fileUrl, isImage: res.data.isImage, decodedToken})
+  } else {
+    alert("No image selected.");
+  }
+}

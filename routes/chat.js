@@ -1,23 +1,13 @@
 const express = require('express');
 const chatController = require('../controllers/chat');
 const userAuthentication = require('../middleware/auth');
-// const socketIO = require('socket.io');
-// const http = require('http')
+const multer = require('../middleware/multer');
 
 const router = express.Router();
-// Create an HTTP server
-// const server = http.createServer(router);
-
-// Pass the HTTP server to Socket.IO
-// const io = socketIO(3000, {
-//     cors: {
-//         origin: ['http://localhost:3000']
-//     }
-// });
-
-// Initialize Socket.IO and pass the io instance to the controller
-// chatController.handleSocket(io);
-router.post('/storeChat',userAuthentication.auth, chatController.storeChat)
-router.get('/getChats',userAuthentication.auth, chatController.getChats)
+router.use(userAuthentication.auth);
+router.post('/storeChat', chatController.storeChat)
+router.get('/getChats', chatController.getChats)
+const upload = multer.upload;
+router.post('/sendImages', upload.single('imageFile'), chatController.sendImages)
 
 module.exports = router;

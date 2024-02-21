@@ -9,6 +9,10 @@ const Groupmessage = sequelize.define('groupmessage', {
         autoIncrement: true
     },
     message: Sequelize.STRING,
+    isImage: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+    }
 });
 
 module.exports = Groupmessage;
