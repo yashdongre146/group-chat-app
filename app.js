@@ -14,6 +14,7 @@ const helmet = require('helmet')
 const Group = require('./models/group')
 const Groupmembers = require('./models/groupmembers')
 const Groupmessage = require('./models/groupmessage')
+const Archivedgroupmessage = require('./models/archivedgroupmessage')
 const socketIO = require('socket.io');
 
 
@@ -67,7 +68,6 @@ Groupmessage.belongsTo(User);
 
 Group.hasMany(Groupmessage);
 Groupmessage.belongsTo(Group);
-
 
 const PORT = process.env.PORT;
 

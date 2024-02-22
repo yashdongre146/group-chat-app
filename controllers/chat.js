@@ -1,7 +1,48 @@
-const Groupmessage = require('../models/groupmessage')
+const { Op } = require('sequelize');
 const Group = require('../models/group');
+const Groupmessage  = require('../models/groupmessage');
+const Archivedgroupmessage = require('../models/archivedgroupmessage');
 const User = require('../models/user');
 const AWS = require('aws-sdk');
+const cron = require('node-cron');
+
+cron.schedule("0 0 * * *", ()=>{
+  moveGroupMessagesToArchive();
+})
+
+async function moveGroupMessagesToArchive() {
+  try {
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    // Find group messages older than one day
+    const messagesToArchive = await Groupmessage.findAll({
+      where: {
+        createdAt: {
+          [Op.lt]: oneDayAgo
+        }
+      }
+    });
+
+    await Archivedgroupmessage.bulkCreate(messagesToArchive.map(message => ({
+      ...message.dataValues
+    })));
+
+    // Delete moved group messages from groupmessage table
+    await Groupmessage.destroy({
+      where: {
+        createdAt: {
+          [Op.lt]: oneDayAgo
+        }
+      }
+    });
+
+    console.log('Group messages moved to archivedgroupmessage table.');
+  } catch (error) {
+    console.error('Error moving group messages to archivedgroupmessage table:', error);
+  }
+}
+
 
 function uploadToS3(data, filename){
     const BUCKET_NAME = process.env.S3_BUCKET_NAME;
